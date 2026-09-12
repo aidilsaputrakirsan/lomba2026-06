@@ -57,7 +57,7 @@ bekerja di tiga lapis, dan hanya satu di antaranya berupa percakapan:
 
 | Lapis | Letak | Nama | Peran |
 | --- | --- | --- | --- |
-| Driver Monitoring | Kamera kabin | **Readiness Watch** | Membaca indikator visual kesiapan → status Ready / Caution / High Risk |
+| Driver Vision Monitoring | Kamera perangkat | **Vision Monitor** | Menganalisis enam parameter visual → DRIVER STATUS & Risk Level |
 | Context Awareness | Latar perjalanan | **Road Context** | Mencocokkan posisi dengan peta risiko: blackspot, zona sekolah, jam rawan |
 | Interaction | Kanal suara | **DRIVERA Agent** | Menjawab, mengedukasi, dan menjalankan perintah lewat suara |
 
@@ -65,16 +65,36 @@ Batas yang dipasang: DRIVERA tidak mengambil alih kendali kendaraan, tidak
 mengunci keberangkatan, dan tidak mengenali identitas pengemudi. Analisis visual
 berjalan di perangkat — yang keluar hanya angka indikator, bukan bingkai kamera.
 
+## Driver Vision Monitoring
+
+Penamaan dipilih dengan sengaja. Yang dianalisis adalah **kondisi visual**
+pengemudi, bukan wajah sebagai identitas — istilah "mengakses wajah" dihindari
+karena menyiratkan pengambilan data pribadi. Enam parameter yang dibaca:
+
+| Parameter | Yang diukur |
+| --- | --- |
+| Eye Closure | Durasi mata tertutup (PERCLOS) |
+| Drowsiness | Indikasi mengantuk — frekuensi menguap |
+| Head Pose | Orientasi kepala (yaw / pitch) |
+| Gaze Direction | Arah pandangan terhadap jalan |
+| Distraction | Indikasi pengemudi terdistraksi |
+| Face Presence | Memastikan wajah pengemudi terdeteksi |
+
+Keluarannya bukan sekadar tampilan wajah, melainkan **DRIVER STATUS**
+(Face Detected, Attention, Drowsiness, Distraction, Risk Level). Ketika kantuk
+terdeteksi, layar berganti menjadi **DRIVER ALERT** dengan satu tindakan jelas:
+*Cari Rest Area Terdekat*.
+
 ## Isi halaman lampiran
 
 | Bagian | Keterangan |
 | --- | --- |
 | Hero + angka rujukan | Judul, tagline, dan empat angka pijakan rancangan |
 | Pijakan masalah | Tiga kondisi lapangan + empat profil pengemudi |
-| Alur sistem | Lima tahap + lima indikator Driver Monitoring + empat lapis teknologi |
+| Alur sistem | Lima tahap + enam parameter Driver Vision Monitoring + empat lapis teknologi |
 | Penempatan asisten | Tiga peran AI, pemicu Context-Aware AI, dan batas kewenangan |
 | Prototipe interaktif | Hanya di layar — tombol di dalam mockup berfungsi |
-| Galeri layar | Sembilan layar ponsel ukuran penuh + keterangan |
+| Galeri layar | Sepuluh layar ponsel ukuran penuh + keterangan |
 | Voice & intervensi | Alur interaksi suara, contoh perintah, enam Safety Intervention |
 | Konsol Dishub & Korlantas | Dashboard agregat, asisten analis, antrean blackspot |
 | Keputusan desain | Enam alasan di balik antarmuka untuk dipakai sambil berkendara |
@@ -95,21 +115,22 @@ src/
     MapCanvas.svelte      kanvas peta SVG (mode heat / drive)
     Dashboard.svelte      konsol Dishub & Korlantas + asisten analis
     Prototype.svelte      pemutar prototipe interaktif
-    screens/              sembilan layar aplikasi
+    screens/              sepuluh layar aplikasi
 public/img/               foto Wikimedia Commons (sudah dikecilkan ke ±1400 px)
 ```
 
-### Sembilan layar
+### Sepuluh layar
 
 1. **Onboarding** — Safety Onboarding + pemilihan profil pengemudi
 2. **PreDrive** — Pre-Drive Safety Check, lima aspek → satu status berangkat
-3. **Monitor** — AI Driver Monitoring, landmark wajah diabstraksi
-4. **Kemudi** — Smart Road Warning + Dynamic Risk Score
-5. **PetaRisiko** — Traffic Risk Map, empat kelas risiko ruas
-6. **DetailTitik** — karakteristik ruas + risiko menurut jam
-7. **Agent** — DRIVERA AI Agent berbasis suara
-8. **Edukasi** — Personalized Safety Education (satu-satunya layar terang)
-9. **Ringkasan** — linimasa keputusan sepanjang perjalanan
+3. **Monitor** — Driver Vision Monitoring, kamera aktif + DRIVER STATUS
+4. **DriverAlert** — kantuk terdeteksi → DRIVER ALERT + Cari Rest Area Terdekat
+5. **Kemudi** — Smart Road Warning + Dynamic Risk Score
+6. **PetaRisiko** — Traffic Risk Map, empat kelas risiko ruas
+7. **DetailTitik** — karakteristik ruas + risiko menurut jam
+8. **Agent** — DRIVERA AI Agent berbasis suara
+9. **Edukasi** — Personalized Safety Education (satu-satunya layar terang)
+10. **Ringkasan** — linimasa keputusan sepanjang perjalanan
 
 ## Catatan penting untuk naskah
 
@@ -121,8 +142,14 @@ public/img/               foto Wikimedia Commons (sudah dikecilkan ke ±1400 px)
   sumber resmi (Korlantas Polri / BPS / WHO) dan masuk Daftar Pustaka.
 - Percakapan pada layar DRIVERA Agent adalah **skrip rancangan**, bukan keluaran
   model sungguhan. Sebutkan ini bila juri bertanya saat pitching.
-- Wajah pada layar Driver Monitoring digambar sebagai abstraksi landmark, bukan
-  foto orang — konsisten dengan janji privasi fitur tersebut.
+- Layar Driver Vision Monitoring memakai **foto dokumentasi tim**. Pastikan
+  orang yang tampak di dalamnya sudah menyetujui fotonya dipublikasikan, karena
+  lampiran ini tayang sebagai halaman publik.
+- Foto Istana Garuda IKN berasal dari **Humas Otorita IKN** dan berhak cipta —
+  dipakai sebagai ilustrasi konteks dengan atribusi. Bila lomba mensyaratkan
+  seluruh aset berlisensi bebas, ganti dengan foto IKN Public Domain.
+- Nama ruas jalan pada koridor Balikpapan–IKN adalah **data simulasi**; jumlah
+  kecelakaan per ruas bukan angka resmi.
 - Foto berasal dari Wikimedia Commons (CC0 / CC BY / CC BY-SA) dan dipakai
   sebagai ilustrasi konteks, **bukan** dokumentasi lokasi yang disebut dalam
   mockup. Halaman kredit sudah disertakan di akhir lampiran.

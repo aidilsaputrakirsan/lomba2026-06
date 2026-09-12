@@ -17,7 +17,7 @@
 
 <div class="s-root">
   <div class="foto">
-    <img src="{BASE}img/blackspot.jpg" alt="Rambu penanda lokasi rawan kecelakaan" />
+    <img src="{BASE}img/ikn-jalan.jpg" alt="Ruas jalan kawasan IKN pada malam hari" />
     <div class="veil"></div>
     <button class="s-icobtn back" aria-label="Kembali" onclick={() => onnav?.('peta')}>
       <Icon name="back" size={16} />

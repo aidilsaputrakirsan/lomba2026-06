@@ -1,102 +1,81 @@
 <script>
   import Icon from '../Icon.svelte';
-  import { INDIKATOR, STATUS, BATAS_CV } from '../data.js';
+  import { BASE, INDIKATOR, DRIVER_STATUS, STATUS, BATAS_CV } from '../data.js';
 
-  let { onnext = null, onback = null } = $props();
-
-  /* Wajah digambar sebagai abstraksi landmark, bukan foto orang.
-     Ini keputusan sadar: layar yang menampilkan wajah asli akan
-     bertentangan dengan janji privasi yang dipasang fitur ini. */
-  const mata = [
-    [34, 47], [40, 44], [46, 47], [40, 50],
-    [54, 47], [60, 44], [66, 47], [60, 50]
-  ];
+  let { onnext = null, onback = null, onalert = null } = $props();
+  const s = STATUS[DRIVER_STATUS.st];
 </script>
 
 <div class="s-root">
   <div class="cam">
-    <svg viewBox="0 0 100 130" preserveAspectRatio="xMidYMid slice" aria-label="Pratinjau kamera kabin dengan titik landmark wajah" role="img">
-      <defs>
-        <linearGradient id="camg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#12202F" /><stop offset="100%" stop-color="#0A1522" />
-        </linearGradient>
-      </defs>
-      <rect width="100" height="130" fill="url(#camg)" />
-
-      <!-- siluet kepala & bahu -->
-      <g stroke="#3ED6CB" fill="none" stroke-opacity=".5" stroke-width=".7">
-        <ellipse cx="50" cy="50" rx="25" ry="31" />
-        <path d="M22 96 Q50 76 78 96 L78 130 L22 130 Z" stroke-opacity=".25" />
-        <path d="M30 40 Q40 34 48 40" /><path d="M52 40 Q60 34 70 40" />
-        <path d="M50 52 v10 M44 66 Q50 70 56 66" stroke-opacity=".32" />
-      </g>
-
-      <!-- jaring landmark tipis -->
-      <g stroke="#3ED6CB" stroke-opacity=".16" stroke-width=".35" fill="none">
-        <path d="M28 44 H72 M28 56 H72 M28 68 H72 M38 26 V80 M50 22 V82 M62 26 V80" />
-      </g>
-
-      <!-- titik landmark mata -->
-      <g fill="#6FE3DA">
-        {#each mata as [x, y]}<circle cx={x} cy={y} r="1.1" />{/each}
-      </g>
-
-      <!-- kotak wilayah mata yang diukur -->
-      <g fill="none" stroke="#FFB627" stroke-width=".8">
-        <rect x="31" y="40.5" width="18" height="13" rx="2" />
-        <rect x="51" y="40.5" width="18" height="13" rx="2" />
-      </g>
-      <!-- wilayah mulut (deteksi menguap) -->
-      <rect x="40" y="60.5" width="20" height="13" rx="2" fill="none" stroke="#FF6A52" stroke-width=".8" />
-    </svg>
+    <!-- Pratinjau kamera perangkat. Wajah pengemudi tampil apa adanya;
+         kotak analisis diletakkan di atasnya sebagai lapisan terpisah
+         supaya jelas bahwa yang diukur adalah kondisi visual, bukan
+         identitas orang di dalam bingkai. -->
+    <div class="frame">
+      <img class="feed" src="{BASE}img/pengemudi.jpg" alt="Pratinjau kamera kabin menampilkan pengemudi di balik kemudi" />
+      <!-- Kotak analisis: wilayah kepala, mata, dan mulut.
+           Diposisikan dalam persen terhadap FOTO, bukan terhadap kotak
+           kamera, supaya tetap pas walau tinggi kotak kamera berubah. -->
+      <div class="box bKepala" aria-hidden="true"><span>Head Pose · 6°</span></div>
+      <div class="box bMata" aria-hidden="true"><span>Eye Closure · 0,11</span></div>
+      <div class="box bMulut" aria-hidden="true"><span>Drowsiness</span></div>
+    </div>
+    <div class="scrim"></div>
 
     <div class="ctop">
-      <span class="rec"><i class="s-live"></i> AI Driver Monitoring</span>
+      <span class="rec"><i class="s-live"></i> CAMERA ACTIVE</span>
       <button class="s-icobtn" aria-label="Matikan kamera" onclick={() => onback?.()}>
         <Icon name="eyeoff" size={15} />
       </button>
     </div>
 
-    <div class="clabel l1">EAR kiri 0,27</div>
-    <div class="clabel l2">EAR kanan 0,26</div>
-    <div class="clabel l3 warn">Menguap terdeteksi</div>
+    <div class="gaze" aria-hidden="true"><span><Icon name="eye" size={10} /> Gaze: ke jalan</span></div>
 
-    <div class="cbawah">
-      <div class="ci">
-        <em>PERCLOS</em>
-        <b style="color:var(--st-ready)">11%</b>
-      </div>
-      <div class="ci">
-        <em>Kedipan/mnt</em>
-        <b style="color:var(--st-caution)">19</b>
-      </div>
-      <div class="ci">
-        <em>Menguap/10mnt</em>
-        <b style="color:var(--st-risk)">3</b>
-      </div>
-      <div class="ci">
-        <em>Yaw kepala</em>
-        <b style="color:var(--st-ready)">6°</b>
-      </div>
+    <div class="cfoot">
+      <span class="fp"><Icon name="check" size={11} stroke={3} /> Face Presence 100%</span>
+      <span class="fps">Analisis 4×/detik · di perangkat</span>
     </div>
   </div>
 
   <div class="sheet">
     <div class="sh">
-      <b class="s-title">Indikator yang dianalisis</b>
-      <span class="s-meta">Diperbarui 4×/detik</span>
+      <div>
+        <b class="s-title">Driver Vision Monitoring</b>
+        <div class="s-meta">Menganalisis kondisi visual, bukan identitas</div>
+      </div>
+      <span class="s-tag" style="color:{s.warna};background:{s.bg}">{DRIVER_STATUS.risk}</span>
+    </div>
+
+    <!-- DRIVER STATUS: hasil analisis, bukan sekadar tampilan wajah -->
+    <div class="status" style="--w:{s.warna};--bg:{s.bg}">
+      <div class="stt"><Icon name="shield" size={12} /> DRIVER STATUS</div>
+      <div class="sgrid">
+        {#each DRIVER_STATUS.baris as b}
+          {@const bs = STATUS[b.st]}
+          <div class="sitem">
+            <em>{b.l}</em>
+            <b style="color:{bs.warna}">
+              {#if b.cek}<Icon name="check" size={12} stroke={3} />{/if}{b.v}
+            </b>
+          </div>
+        {/each}
+      </div>
+      <div class="srisk">
+        <span>Risk Level</span>
+        <b style="color:{s.warna}">{DRIVER_STATUS.risk}</b>
+      </div>
     </div>
 
     <div class="ind">
       {#each INDIKATOR as i}
         {@const st = STATUS[i.st]}
         <div class="ir">
-          <span class="ik" style="color:{st.warna};background:{st.bg}">{i.kode}</span>
+          <span class="idot" style="background:{st.warna}" aria-label={st.label}></span>
           <div>
-            <b>{i.nama}</b>
+            <b>{i.kode}</b>
             <em>{i.ukur}</em>
           </div>
-          <span class="idot" style="background:{st.warna}" aria-label={st.label}></span>
         </div>
       {/each}
     </div>
@@ -106,66 +85,133 @@
       <p>{BATAS_CV}</p>
     </div>
 
-    <button class="s-btn" onclick={() => onnext?.()}>
-      <Icon name="gauge" size={16} /> Lihat Dynamic Risk Score
-    </button>
+    <div class="acts">
+      <button class="s-btn ghost" onclick={() => onalert?.()}>
+        <Icon name="moon" size={15} /> Simulasi kantuk
+      </button>
+      <button class="s-btn" onclick={() => onnext?.()}>
+        <Icon name="gauge" size={15} /> Risk Score
+      </button>
+    </div>
   </div>
 </div>
 
 <style>
-  .cam { position: relative; flex: 1; min-height: 0; overflow: hidden; }
-  .cam svg { width: 100%; height: 100%; display: block; }
+  /* Foto 896x1195 pada lebar 390 -> tinggi tayang 520px.
+     Lapisan .frame digeser ke atas sebesar (520 - tinggi kamera) x 0.38,
+     meniru object-position 62% 38% tetapi dengan koordinat yang terkunci. */
+  .cam { position: relative; flex: none; height: 430px; overflow: hidden; background: #0A1522; }
+  .frame { position: absolute; left: 0; width: 100%; height: 520px; top: -34px; }
+  .feed { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* Bagian atas dan bawah digelapkan agar label tetap terbaca
+     tanpa menutupi wajah yang sedang dianalisis. */
+  .scrim {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(6,12,20,.82) 0%, rgba(6,12,20,.12) 22%, rgba(6,12,20,0) 45%),
+      linear-gradient(0deg, rgba(6,12,20,.88) 0%, rgba(6,12,20,0) 26%);
+  }
 
-  .ctop { position: absolute; top: 60px; left: 18px; right: 18px; display: flex; align-items: center; gap: 8px; }
+  .ctop { position: absolute; top: 60px; left: 18px; right: 18px; display: flex; align-items: flex-start; gap: 8px; }
   .rec {
     flex: 1; display: inline-flex; align-items: center; gap: 7px;
-    padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 800;
-    background: rgba(9,18,30,.68); border: 1px solid rgba(255,255,255,.16); color: var(--ink-50);
+    padding: 6px 12px; border-radius: 999px;
+    font-size: 10.5px; font-weight: 800; letter-spacing: .1em;
+    background: rgba(9,18,30,.7); border: 1px solid rgba(255,106,82,.5); color: #fff;
     backdrop-filter: blur(12px); align-self: flex-start;
   }
   .rec i { width: 7px; height: 7px; border-radius: 50%; background: var(--st-risk); display: block; flex: none; }
 
-  .clabel {
-    position: absolute; padding: 3px 8px; border-radius: 7px; font-size: 9px; font-weight: 800;
-    background: rgba(9,18,30,.72); border: 1px solid rgba(255,182,39,.5); color: var(--am-300);
-    backdrop-filter: blur(8px); white-space: nowrap;
+  /* Kotak deteksi — diposisikan mengikuti letak wajah pada foto */
+  .box {
+    position: absolute; border: 1.5px solid var(--tl-400); border-radius: 6px;
+    box-shadow: 0 0 0 1px rgba(6,12,20,.5);
   }
-  .l1 { top: 36%; left: 5%; }
-  .l2 { top: 30%; right: 5%; }
-  .l3 { top: 55%; right: 6%; border-color: rgba(255,106,82,.55); color: var(--st-risk); }
+  .box span {
+    position: absolute; top: -9px; left: -1px; white-space: nowrap;
+    z-index: 2;
+    padding: 2px 6px; border-radius: 5px;
+    background: var(--tl-400); color: #04221F;
+    font-size: 8px; font-weight: 800; letter-spacing: .02em;
+  }
+  .bMata { top: 35.8%; left: 56.5%; width: 15%; height: 2.6%; }
+  /* Label diletakkan di samping kanan kotak, bukan di atasnya, agar
+     mata dan mulut yang sedang dianalisis tetap terlihat. */
+  .bMata span, .bMulut span { top: 50%; left: 100%; transform: translate(6px, -50%); }
+  .bKepala {
+    top: 26%; left: 50%; width: 31%; height: 22%;
+    border-color: rgba(111,227,218,.45); border-style: dashed;
+  }
+  .bKepala span { background: rgba(111,227,218,.85); }
+  .bMulut {
+    top: 43.3%; left: 59%; width: 11%; height: 2.6%;
+    border-color: var(--st-caution);
+  }
+  .bMulut span { background: var(--st-caution); color: #2A1502; }
 
-  .cbawah {
-    position: absolute; left: 16px; right: 16px; bottom: 14px;
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
-    padding: 9px 10px; border-radius: 14px;
-    background: rgba(9,18,30,.7); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(14px);
+  .gaze {
+    position: absolute; top: 66%; left: 18px;
+    padding: 4px 9px; border-radius: 8px;
+    background: rgba(9,18,30,.74); border: 1px solid rgba(23,196,184,.45);
+    backdrop-filter: blur(8px);
   }
-  .ci { text-align: center; }
-  .ci em { font-style: normal; display: block; font-size: 8.5px; color: #8FA6BC; font-weight: 700; }
-  .ci b { font-size: 15px; letter-spacing: -.02em; }
+  .gaze span {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 9.5px; font-weight: 800; color: var(--tl-300);
+  }
+
+  .cfoot {
+    position: absolute; left: 18px; right: 18px; bottom: 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  }
+  .fp {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 10px; border-radius: 999px;
+    background: var(--st-ready-bg); border: 1px solid rgba(34,212,138,.4); color: var(--st-ready);
+    font-size: 9.5px; font-weight: 800; backdrop-filter: blur(8px);
+  }
+  .fps { font-size: 9px; color: #9DB3C7; font-weight: 600; }
 
   .sheet {
-    flex: none; background: #101C2B; border-radius: 24px 24px 0 0;
-    padding: 14px 20px 18px; margin-top: -18px; position: relative; z-index: 4;
+    flex: 1; min-height: 0; background: #101C2B; border-radius: 24px 24px 0 0;
+    padding: 13px 20px 16px; margin-top: -18px; position: relative; z-index: 4;
     border-top: 1px solid rgba(255,255,255,.09);
   }
-  .sh { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 9px; }
+  .sh { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
 
-  .ind { display: flex; flex-direction: column; gap: 5px; }
-  .ir { display: flex; gap: 9px; align-items: center; }
-  .ik {
-    font-size: 9.5px; font-weight: 800; padding: 3px 7px; border-radius: 7px; flex: none;
-    letter-spacing: .02em;
+  .status {
+    padding: 10px 12px; border-radius: 14px; margin-bottom: 10px;
+    background: var(--bg); border: 1px solid color-mix(in srgb, var(--w) 34%, transparent);
   }
+  .stt {
+    display: flex; align-items: center; gap: 5px; margin-bottom: 8px;
+    font-size: 9px; font-weight: 800; letter-spacing: .14em; color: var(--w);
+  }
+  .sgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 12px; }
+  .sitem { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+  .sitem em { font-style: normal; font-size: 10.5px; color: #A8BED2; }
+  .sitem b { display: flex; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 800; }
+  .srisk {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 9px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.12);
+  }
+  .srisk span { font-size: 10.5px; color: #A8BED2; font-weight: 600; }
+  .srisk b { font-size: 14px; font-weight: 800; letter-spacing: .06em; }
+
+  .ind { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px 10px; }
+  .ir { display: flex; gap: 7px; align-items: flex-start; }
+  .idot { width: 7px; height: 7px; border-radius: 50%; flex: none; margin-top: 5px; }
   .ir > div { flex: 1; min-width: 0; }
-  .ir b { display: block; font-size: 11.5px; color: var(--ink-50); font-weight: 700; line-height: 1.3; }
-  .ir em { font-style: normal; font-size: 10px; color: #7F95AB; }
-  .idot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .ir b { display: block; font-size: 10.5px; color: var(--ink-50); font-weight: 800; line-height: 1.3; }
+  .ir em { font-style: normal; font-size: 9px; color: #7F95AB; line-height: 1.35; display: block; }
 
   .batas {
-    display: flex; gap: 7px; align-items: flex-start; margin: 11px 0 12px;
-    padding: 9px 11px; border-radius: 12px;
-    background: var(--st-ready-bg); border: 1px solid rgba(34,212,138,.28); color: var(--st-ready);
+    display: flex; gap: 7px; align-items: flex-start; margin: 10px 0 10px;
+    padding: 8px 10px; border-radius: 11px;
+    background: var(--st-ready-bg); border: 1px solid rgba(34,212,138,.26); color: var(--st-ready);
   }
-  .batas p { font-size: 10px; color: #A8BED2; line-height: 1.5; }
+  .batas p { font-size: 9px; color: #A8BED2; line-height: 1.45; }
+
+  .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .acts .s-btn { font-size: 12.5px; min-height: 42px; }
 </style>

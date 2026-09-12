@@ -6,6 +6,7 @@
   import Onboarding from './lib/screens/Onboarding.svelte';
   import PreDrive from './lib/screens/PreDrive.svelte';
   import Monitor from './lib/screens/Monitor.svelte';
+  import DriverAlert from './lib/screens/DriverAlert.svelte';
   import Kemudi from './lib/screens/Kemudi.svelte';
   import PetaRisiko from './lib/screens/PetaRisiko.svelte';
   import DetailTitik from './lib/screens/DetailTitik.svelte';
@@ -20,7 +21,7 @@
   const alur = [
     { ic: 'book', t: 'Edukasi lebih dulu', d: 'Safety Onboarding memberi dasar keselamatan sebelum satu fitur pun dipakai. Kesadaran dibangun sebelum perjalanan, bukan setelah nyaris celaka.' },
     { ic: 'shield', t: 'Kesiapan diperiksa', d: 'Pre-Drive Check menggabungkan kondisi pengemudi, risiko rute, dan lingkungan menjadi satu status: Ready, Caution, atau High Risk.' },
-    { ic: 'eye', t: 'Kondisi dibaca terus', d: 'Computer Vision membaca durasi mata tertutup, pola kedipan, indikasi menguap, dan orientasi kepala — seluruhnya di dalam perangkat.' },
+    { ic: 'eye', t: 'Kondisi visual dianalisis', d: 'Driver Vision Monitoring membaca enam parameter — eye closure, drowsiness, head pose, gaze direction, distraction, dan face presence — seluruhnya di dalam perangkat.' },
     { ic: 'gauge', t: 'Risiko dihitung ulang', d: 'Driver Risk dan Road Risk digabung menjadi Dynamic Risk Score yang berubah mengikuti kondisi perjalanan.' },
     { ic: 'mic', t: 'Bantuan disampaikan', d: 'Peringatan, edukasi, dan rekomendasi tindakan diberikan lewat suara — tanpa menuntut pengemudi menatap layar.' }
   ];
@@ -74,7 +75,7 @@
 
       <div class="meta">
         <div><em>Tagline</em><b>{BRAND.tagline}</b></div>
-        <div><em>Lapis teknologi</em><b>Computer Vision · GIS · Analytics · Voice AI</b></div>
+        <div><em>Wilayah studi</em><b>Koridor Balikpapan – IKN Nusantara</b></div>
       </div>
 
       <div class="cta no-print">
@@ -84,7 +85,7 @@
     </div>
 
     <div class="hshot">
-      <img src="{BASE}img/hero-malam.jpg" alt="Kendaraan melaju di jalan kota pada malam hari" />
+      <img src="{BASE}img/ikn-istana.jpg" alt="Istana Garuda dan Istana Negara di Ibu Kota Nusantara" />
       <div class="badge glass">
         <b>62<small>/100</small></b>
         <em>Dynamic Risk Score<br />saat berkendara (simulasi)</em>
@@ -130,16 +131,16 @@
     </figure>
 
     <figure class="glass pcard">
-      <img src="{BASE}img/blackspot.jpg" alt="Rambu penanda lokasi rawan kecelakaan" />
+      <img src="{BASE}img/ikn-jalan.jpg" alt="Pengerjaan jalan di kawasan Istana Negara IKN pada malam hari" />
       <figcaption>
         <span class="s-tag" style="color:var(--rk-4);background:var(--rk-4-bg)">KONDISI JALAN</span>
         <b>Riwayat kecelakaan berhenti di arsip</b>
-        <p>Data blackspot tercatat setelah kejadian, tetapi tidak pernah sampai ke pengemudi yang sedang menuju ke sana malam ini.</p>
+        <p>Koridor menuju IKN tumbuh lebih cepat daripada datanya. Ruas baru, penerangan belum merata, dan riwayat kejadian berhenti di arsip instansi.</p>
       </figcaption>
     </figure>
 
     <figure class="glass pcard">
-      <img src="{BASE}img/macet-jakarta.jpg" alt="Kepadatan lalu lintas di jalan kota" />
+      <img src="{BASE}img/kokpit.jpg" alt="Kemudi dan panel instrumen di dalam kabin kendaraan" />
       <figcaption>
         <span class="s-tag" style="color:var(--st-caution);background:var(--st-caution-bg)">CARA MENYAMPAIKAN</span>
         <b>Aplikasi yang menuntut layar menambah risiko</b>
@@ -179,18 +180,18 @@
   </div>
 
   <div class="glass kelas">
-    <b class="pt">Lima indikator visual yang dibaca Driver Monitoring</b>
+    <b class="pt">Enam parameter visual yang dianalisis Driver Vision Monitoring</b>
     <div class="kl">
       {#each INDIKATOR as k}
         {@const st = STATUS[k.st]}
         <div class="ki">
-          <span class="kd" style="background:{st.bg};color:{st.warna}">{k.kode}</span>
-          <div><b>{k.nama}</b><em>{k.ukur}</em></div>
+          <span class="kdot" style="background:{st.warna}" aria-label={st.label}></span>
+          <div><b>{k.kode}</b><em>{k.nama} — {k.ukur}</em></div>
         </div>
       {/each}
-      <div class="ki">
-        <span class="kd" style="background:rgba(255,255,255,.07);color:var(--ink-400)">—</span>
-        <div><b>Bukan pengenalan identitas</b><em>Tidak ada face recognition, tidak ada pencocokan dengan basis data orang</em></div>
+      <div class="ki wide">
+        <span class="kdot" style="background:var(--ink-500)" aria-hidden="true"></span>
+        <div><b>Bukan pengenalan identitas</b><em>Tidak ada face recognition, tidak ada pencocokan dengan basis data orang. Yang keluar dari perangkat hanya angka indikator.</em></div>
       </div>
     </div>
   </div>
@@ -269,7 +270,7 @@
   <div class="eyebrow">Prototipe</div>
   <h2>Antarmuka pengemudi</h2>
   <p class="lead" style="margin:10px 0 26px">
-    Sembilan layar inti, dirancang untuk dipakai di dalam kabin — sering pada malam hari, dengan
+    Sepuluh layar inti, dirancang untuk dipakai di dalam kabin — sering pada malam hari, dengan
     lirikan yang tidak boleh lebih dari dua detik, dan idealnya tanpa disentuh sama sekali.
   </p>
   <div class="no-print"><Prototype /></div>
@@ -287,25 +288,28 @@
     <Phone label="2 · Pre-Drive Safety Check" caption="Lima aspek kesiapan diringkas menjadi satu status berangkat.">
       <PreDrive />
     </Phone>
-    <Phone label="3 · AI Driver Monitoring" caption="Landmark wajah diabstraksi — kesiapan yang dibaca, bukan identitas.">
+    <Phone label="3 · Driver Vision Monitoring" caption="Kamera perangkat aktif; enam parameter visual dianalisis menjadi DRIVER STATUS.">
       <Monitor />
     </Phone>
-    <Phone label="4 · Mode berkendara" caption="Smart Road Warning menguasai layar; Dynamic Risk Score di bawahnya.">
+    <Phone label="4 · Driver Alert" caption="Saat drowsiness terdeteksi: peringatan, dasarnya, dan jalan keluarnya.">
+      <DriverAlert />
+    </Phone>
+    <Phone label="5 · Mode berkendara" caption="Smart Road Warning menguasai layar; Dynamic Risk Score di bawahnya.">
       <Kemudi />
     </Phone>
-    <Phone label="5 · Traffic Risk Map" caption="Empat kelas risiko ruas beserta jam ketika risikonya memuncak.">
+    <Phone label="6 · Traffic Risk Map" caption="Empat kelas risiko ruas beserta jam ketika risikonya memuncak.">
       <PetaRisiko />
     </Phone>
-    <Phone label="6 · Detail ruas" caption="Risiko per jam — alasan mengapa peringatan muncul di jam tertentu.">
+    <Phone label="7 · Detail ruas" caption="Risiko per jam — alasan mengapa peringatan muncul di jam tertentu.">
       <DetailTitik />
     </Phone>
-    <Phone label="7 · DRIVERA Agent" caption="Kanal suara sebagai jalur utama; papan ketik hanya alternatif.">
+    <Phone label="8 · DRIVERA Agent" caption="Kanal suara sebagai jalur utama; papan ketik hanya alternatif.">
       <Agent />
     </Phone>
-    <Phone label="8 · Edukasi kontekstual" caption="Satu-satunya layar terang — dibaca lama, hanya saat kendaraan berhenti.">
+    <Phone label="9 · Edukasi kontekstual" caption="Satu-satunya layar terang — dibaca lama, hanya saat kendaraan berhenti.">
       <Edukasi />
     </Phone>
-    <Phone label="9 · Ringkasan perjalanan" caption="Linimasa keputusan: kapan risiko naik dan apa yang dilakukan.">
+    <Phone label="10 · Ringkasan perjalanan" caption="Linimasa keputusan: kapan risiko naik dan apa yang dilakukan.">
       <Ringkasan />
     </Phone>
   </div>
@@ -318,7 +322,7 @@
 
   <div class="vgrid">
     <div class="glass vcard">
-      <img class="vshot" src="{BASE}img/kokpit.jpg" alt="Kemudi dan panel instrumen di dalam kabin kendaraan" />
+      <img class="vshot" src="{BASE}img/hero-malam.jpg" alt="Kendaraan melaju di jalan pada malam hari" />
       <b class="pt">Alur interaksi suara</b>
       <div class="vf">
         <span>Pengguna berbicara</span>
@@ -368,7 +372,7 @@
     memicu peringatan, pada jam berapa, dan dengan sebab dominan apa. Dari sana daftar prioritas
     penanganan blackspot disusun dengan rumus yang terbuka.
   </p>
-  <img class="dshot" src="{BASE}img/tol-jakarta.jpg" alt="Ruas jalan tol perkotaan dengan lalu lintas padat" />
+  <img class="dshot" src="{BASE}img/ikn-kota.png" alt="Pandangan udara kawasan inti IKN Nusantara beserta jaringan jalannya" />
   <Dashboard />
 </section>
 
@@ -549,7 +553,8 @@
   .kelas { margin-top: 16px; padding: 20px 24px; }
   .kl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .ki { display: flex; gap: 9px; align-items: flex-start; }
-  .kd { font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 7px; flex: none; }
+  .kdot { width: 8px; height: 8px; border-radius: 50%; flex: none; margin-top: 5px; }
+  .ki.wide { grid-column: 1 / -1; }
   .ki b { display: block; font-size: 12.5px; color: var(--ink-50); line-height: 1.3; }
   .ki em { font-style: normal; font-size: 11px; color: var(--ink-400); line-height: 1.4; }
 

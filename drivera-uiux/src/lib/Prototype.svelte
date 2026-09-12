@@ -3,6 +3,7 @@
   import Onboarding from './screens/Onboarding.svelte';
   import PreDrive from './screens/PreDrive.svelte';
   import Monitor from './screens/Monitor.svelte';
+  import DriverAlert from './screens/DriverAlert.svelte';
   import Kemudi from './screens/Kemudi.svelte';
   import PetaRisiko from './screens/PetaRisiko.svelte';
   import DetailTitik from './screens/DetailTitik.svelte';
@@ -16,7 +17,8 @@
   const urutan = [
     { id: 'onboarding', l: 'Onboarding' },
     { id: 'predrive', l: 'Pre-Drive' },
-    { id: 'monitor', l: 'Monitoring' },
+    { id: 'monitor', l: 'Vision Monitor' },
+    { id: 'alert', l: 'Driver Alert' },
     { id: 'kemudi', l: 'Kemudi' },
     { id: 'peta', l: 'Peta Risiko' },
     { id: 'titik', l: 'Detail Ruas' },
@@ -36,7 +38,9 @@
       {:else if layar === 'predrive'}
         <PreDrive onnext={() => nav('monitor')} onback={() => nav('onboarding')} />
       {:else if layar === 'monitor'}
-        <Monitor onnext={() => nav('kemudi')} onback={() => nav('predrive')} />
+        <Monitor onnext={() => nav('kemudi')} onback={() => nav('predrive')} onalert={() => nav('alert')} />
+      {:else if layar === 'alert'}
+        <DriverAlert onnext={() => nav('agent')} onback={() => nav('monitor')} />
       {:else if layar === 'kemudi'}
         <Kemudi onnav={nav} />
       {:else if layar === 'peta'}
@@ -58,7 +62,7 @@
     <h3>Coba alurnya langsung</h3>
     <p class="s-meta" style="font-size:13.5px;margin:8px 0 16px">
       Tombol di dalam layar berfungsi. Alur utama: pilih profil → Pre-Drive Check →
-      monitoring kabin → <b>peringatan saat berkendara</b> → tanya DRIVERA Agent →
+      Driver Vision Monitoring → <b>Driver Alert</b> → peringatan ruas → DRIVERA Agent →
       edukasi kontekstual → ringkasan perjalanan.
     </p>
 
@@ -72,7 +76,7 @@
 
     <div class="hint">
       Ketuk penanda berwarna pada peta risiko untuk mengganti ruas yang ditampilkan di panel bawah.
-      Tombol mikrofon di tab bar membuka DRIVERA Agent.
+      Tombol “Simulasi kantuk” pada layar Vision Monitor membuka state Driver Alert.
     </div>
   </div>
 </div>

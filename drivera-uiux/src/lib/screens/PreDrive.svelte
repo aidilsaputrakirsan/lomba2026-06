@@ -1,6 +1,6 @@
 <script>
   import Icon from '../Icon.svelte';
-  import { PRECHECK, PRECHECK_HASIL, STATUS } from '../data.js';
+  import { PRECHECK, PRECHECK_HASIL, STATUS, PERJALANAN } from '../data.js';
 
   let { onnext = null, onback = null } = $props();
   const h = STATUS[PRECHECK_HASIL.st];
@@ -16,7 +16,7 @@
     </button>
     <div style="flex:1">
       <h3>Pre-Drive Safety Check</h3>
-      <div class="sub">Bekasi → Cirebon · 184 km · mulai 21.40</div>
+      <div class="sub">{PERJALANAN.rute} · {PERJALANAN.jarak} · mulai 21.40</div>
     </div>
   </div>
 
