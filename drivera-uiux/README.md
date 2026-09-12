@@ -98,7 +98,7 @@ terdeteksi, layar berganti menjadi **DRIVER ALERT** dengan satu tindakan jelas:
 | Voice & intervensi | Alur interaksi suara, contoh perintah, enam Safety Intervention |
 | Konsol Dishub & Korlantas | Dashboard agregat, asisten analis, antrean blackspot |
 | Keputusan desain | Enam alasan di balik antarmuka untuk dipakai sambil berkendara |
-| Sistem desain | Palet, tipografi, radius, tumpukan teknologi |
+| Sistem desain | Identitas visual (logo), palet, tipografi, radius, tumpukan teknologi |
 | Kredit gambar | Atribusi lisensi foto |
 
 ## Struktur
@@ -116,7 +116,10 @@ src/
     Dashboard.svelte      konsol Dishub & Korlantas + asisten analis
     Prototype.svelte      pemutar prototipe interaktif
     screens/              sepuluh layar aplikasi
-public/img/               foto Wikimedia Commons (sudah dikecilkan ke ±1400 px)
+public/img/               foto konteks + dokumentasi tim + logo
+  logo-full.png           logo lengkap (lambang + wordmark), latar transparan
+  logo-mark.png           lambang perisai saja — dipakai di hero, onboarding, konsol
+public/favicon.png        favicon 192 px dari lambang
 ```
 
 ### Sepuluh layar
@@ -124,7 +127,9 @@ public/img/               foto Wikimedia Commons (sudah dikecilkan ke ±1400 px)
 1. **Onboarding** — Safety Onboarding + pemilihan profil pengemudi
 2. **PreDrive** — Pre-Drive Safety Check, lima aspek → satu status berangkat
 3. **Monitor** — Driver Vision Monitoring, kamera aktif + DRIVER STATUS
+   (foto `pengemudi.jpg` — kondisi normal)
 4. **DriverAlert** — kantuk terdeteksi → DRIVER ALERT + Cari Rest Area Terdekat
+   (foto `pengemudi-ngantuk.jpg` — peragaan menguap, mata terpejam)
 5. **Kemudi** — Smart Road Warning + Dynamic Risk Score
 6. **PetaRisiko** — Traffic Risk Map, empat kelas risiko ruas
 7. **DetailTitik** — karakteristik ruas + risiko menurut jam
@@ -142,6 +147,9 @@ public/img/               foto Wikimedia Commons (sudah dikecilkan ke ±1400 px)
   sumber resmi (Korlantas Polri / BPS / WHO) dan masuk Daftar Pustaka.
 - Percakapan pada layar DRIVERA Agent adalah **skrip rancangan**, bukan keluaran
   model sungguhan. Sebutkan ini bila juri bertanya saat pitching.
+- **Logo** disediakan penulis sebagai JPEG berlatar putih. Latar putih dikunci
+  keluar menjadi PNG transparan (`logo-full.png`, `logo-mark.png`) agar bisa
+  dipakai di atas tema gelap. Berkas JPEG aslinya tidak lagi disimpan di repo.
 - Layar Driver Vision Monitoring memakai **foto dokumentasi tim**. Pastikan
   orang yang tampak di dalamnya sudah menyetujui fotonya dipublikasikan, karena
   lampiran ini tayang sebagai halaman publik.

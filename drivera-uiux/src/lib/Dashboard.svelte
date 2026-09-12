@@ -1,7 +1,7 @@
 <script>
   import Icon from './Icon.svelte';
   import MapCanvas from './MapCanvas.svelte';
-  import { PRIORITAS, TANYA_ANALIS, RISIKO } from './data.js';
+  import { BASE, PRIORITAS, TANYA_ANALIS, RISIKO } from './data.js';
 
   // Kecelakaan tercatat vs ruas selesai ditangani (data simulasi)
   const laka = [46, 51, 44, 58, 62, 55, 71, 68];
@@ -20,12 +20,7 @@
 <div class="dash glass">
   <header>
     <div class="brand">
-      <span class="lg">
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" stroke-width="2" />
-          <circle cx="12" cy="12" r="2.8" fill="currentColor" />
-        </svg>
-      </span>
+      <img class="lg" src="{BASE}img/logo-mark.png" alt="Logo DRIVERA" />
       <div>
         <b>DRIVERA Kota — Konsol Dishub & Korlantas</b>
         <em>Peta prioritas penanganan blackspot · Semester II 2026</em>
@@ -157,10 +152,7 @@
 
   header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .brand { display: flex; align-items: center; gap: 11px; }
-  .lg {
-    width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center;
-    background: var(--grad-brand); color: #04221F;
-  }
+  .lg { width: 40px; height: 40px; object-fit: contain; flex: none; }
   .brand b { display: block; font-size: 15.5px; color: var(--ink-50); font-weight: 800; }
   .brand em { font-style: normal; font-size: 12px; color: var(--ink-400); }
   .tools { display: flex; gap: 8px; }

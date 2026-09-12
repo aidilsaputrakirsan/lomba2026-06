@@ -56,12 +56,7 @@
   <div class="glass hero">
     <div class="htext">
       <div class="topline">
-        <span class="mark">
-          <svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" stroke-width="2" />
-            <circle cx="12" cy="12" r="2.8" fill="currentColor" />
-          </svg>
-        </span>
+        <img class="mark" src="{BASE}img/logo-mark.png" alt="Logo DRIVERA" />
         <span class="nm">DRIVERA</span>
         <span class="pill"><span class="dot"></span> Lampiran UI/UX</span>
       </div>
@@ -122,7 +117,7 @@
 
   <div class="prob">
     <figure class="glass pcard">
-      <img src="{BASE}img/hujan-kaca.jpg" alt="Jalan terlihat kabur dari balik kaca mobil yang basah" />
+      <img src="{BASE}img/pengemudi-ngantuk.jpg" alt="Pengemudi menguap dengan mata terpejam di balik kemudi" />
       <figcaption>
         <span class="s-tag" style="color:var(--st-risk);background:var(--st-risk-bg)">KONDISI PENGEMUDI</span>
         <b>Kantuk tidak terasa oleh yang mengalaminya</b>
@@ -397,6 +392,22 @@
   <h2>Token visual</h2>
 
   <div class="ds">
+    <div class="glass dcard logo-card">
+      <b class="pt">Identitas visual</b>
+      <div class="logo-plate">
+        <img src="{BASE}img/logo-full.png" alt="Logo DRIVERA lengkap dengan wordmark dan tagline Smart Mobility Solutions" />
+      </div>
+      <p class="dn" style="margin-top:14px">
+        Lambang perisai menggabungkan tiga hal yang dikerjakan DRIVERA sekaligus: huruf D, lensa
+        kamera di tengahnya, dan ruas jalan yang membentang di belakangnya — perlindungan,
+        penglihatan, dan perjalanan dalam satu tanda.
+      </p>
+      <div class="logo-rule">
+        <span>Ruang kosong minimum setara tinggi lensa · jangan diputar, dimiringkan, atau
+        diganti warnanya · di atas foto selalu pakai versi transparan di area gelap.</span>
+      </div>
+    </div>
+
     <div class="glass dcard">
       <b class="pt">Palet</b>
       <div class="sw">
@@ -472,10 +483,7 @@
   .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 0; overflow: hidden; }
   .htext { padding: 40px 36px; }
   .topline { display: flex; align-items: center; gap: 11px; margin-bottom: 22px; }
-  .mark {
-    width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center;
-    background: var(--grad-brand); color: #04221F;
-  }
+  .mark { width: 40px; height: 40px; object-fit: contain; flex: none; }
   .nm { font-weight: 800; font-size: 17px; letter-spacing: .12em; color: var(--ink-50); }
   h1 { font-size: clamp(34px, 4.6vw, 52px); line-height: 1.06; letter-spacing: -.035em; }
 
@@ -658,8 +666,18 @@
   .ac p { font-size: 12px; color: var(--ink-300); line-height: 1.55; }
 
   /* ---- Sistem desain ---- */
-  .ds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+  .ds { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 24px; }
   .dcard { padding: 20px 22px; }
+  .logo-plate {
+    display: grid; place-items: center; padding: 18px; border-radius: 16px;
+    background: radial-gradient(120% 120% at 50% 0%, rgba(23,196,184,.12) 0%, rgba(255,255,255,.03) 60%);
+    border: 1px solid var(--glass-brd-soft);
+  }
+  .logo-plate img { width: 100%; max-width: 250px; height: auto; }
+  .logo-rule {
+    margin-top: 12px; padding-top: 11px; border-top: 1px solid var(--glass-brd-soft);
+    font-size: 11px; color: var(--ink-400); line-height: 1.55;
+  }
   .sw { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
   .sw div { text-align: center; }
   .sw span { display: block; height: 42px; border-radius: 11px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
@@ -722,7 +740,8 @@
     .badge { background: #fff; border-color: #C7D4E0; }
     .badge b { color: #9A6B03; }
     .stats { grid-template-columns: repeat(4, 1fr); gap: 14px; }
-    .prob, .a11y, .ds, .aigrid { grid-template-columns: repeat(3, 1fr); }
+    .prob, .a11y, .aigrid { grid-template-columns: repeat(3, 1fr); }
+    .ds { grid-template-columns: repeat(4, 1fr); }
     .vgrid { grid-template-columns: repeat(2, 1fr); }
     .pl, .lapis, .cl { grid-template-columns: repeat(4, 1fr); }
     .kl { grid-template-columns: repeat(3, 1fr); }

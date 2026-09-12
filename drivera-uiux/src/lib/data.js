@@ -365,7 +365,9 @@ export const TECH = [
 
 export const KREDIT = [
   { file: 'ikn-istana.jpg', judul: 'Istana Garuda & Istana Negara, IKN Nusantara', pembuat: 'Humas Otorita IKN', lisensi: '© 2025 — dipakai sebagai ilustrasi konteks' },
-  { file: 'pengemudi.jpg', judul: 'Pengemudi di dalam kabin (dokumentasi tim)', pembuat: 'Dokumentasi penulis', lisensi: 'Dipakai atas izin yang bersangkutan' },
+  { file: 'logo-full.png', judul: 'Logo DRIVERA — Smart Mobility Solutions', pembuat: 'Karya tim penulis', lisensi: 'Milik penulis' },
+  { file: 'pengemudi.jpg', judul: 'Pengemudi kondisi normal (dokumentasi tim)', pembuat: 'Dokumentasi penulis', lisensi: 'Dipakai atas izin yang bersangkutan' },
+  { file: 'pengemudi-ngantuk.jpg', judul: 'Pengemudi menguap — peragaan kondisi kantuk', pembuat: 'Dokumentasi penulis', lisensi: 'Dipakai atas izin yang bersangkutan' },
   { file: 'ikn-jalan.jpg', judul: 'Pengerjaan jalan di kawasan Istana Negara IKN', pembuat: 'Marwan Mohamad', lisensi: 'CC BY-SA 4.0' },
   { file: 'ikn-kota.png', judul: 'Nusantara, Juni 2024 (udara)', pembuat: 'PUPR Permukiman Kaltim', lisensi: 'Public domain' },
   { file: 'hero-malam.jpg', judul: 'Cars are driving down the street at night', pembuat: 'Pattaya Patrol', lisensi: 'CC BY-SA 4.0' },

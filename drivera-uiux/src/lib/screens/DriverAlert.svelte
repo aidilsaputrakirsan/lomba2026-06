@@ -10,8 +10,9 @@
 <div class="s-root alert">
   <div class="cam">
     <div class="frame">
-      <img class="feed" src="{BASE}img/pengemudi.jpg" alt="Pratinjau kamera kabin saat indikasi kantuk terdeteksi" />
+      <img class="feed" src="{BASE}img/pengemudi-ngantuk.jpg" alt="Pratinjau kamera kabin: pengemudi menguap dengan mata terpejam" />
       <div class="box bMata" aria-hidden="true"><span>Eye Closure · 1,8 dtk</span></div>
+      <div class="box bMulut" aria-hidden="true"><span>Yawn detected</span></div>
     </div>
     <!-- Saat risiko naik, pratinjau sengaja diredam: yang harus dibaca
          pengemudi adalah peringatannya, bukan wajahnya sendiri. -->
@@ -118,7 +119,9 @@
     font-size: 8px; font-weight: 800;
   }
   .bMata { top: 35.8%; left: 56.5%; width: 15%; height: 2.6%; }
-  .bMata span { top: 50%; left: 100%; transform: translate(6px, -50%); }
+  .bMata span, .bMulut span { top: 50%; left: 100%; transform: translate(6px, -50%); }
+  .bMulut { top: 43.3%; left: 55%; width: 13%; height: 4.5%; border-color: var(--am-500); }
+  .bMulut span { background: var(--am-500); color: #2A1502; }
 
   .banner {
     position: absolute; left: 16px; right: 16px; bottom: 14px; z-index: 3;

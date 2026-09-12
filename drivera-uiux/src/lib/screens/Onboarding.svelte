@@ -11,12 +11,7 @@
     <img src="{BASE}img/hero-malam.jpg" alt="Kendaraan melaju di jalan kota pada malam hari" />
     <div class="veil"></div>
     <div class="brandline">
-      <span class="logo">
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" stroke-width="2" />
-          <circle cx="12" cy="12" r="2.8" fill="currentColor" />
-        </svg>
-      </span>
+      <img class="logo" src="{BASE}img/logo-mark.png" alt="Logo DRIVERA" />
       <div>
         <div class="nm">DRIVERA</div>
         <div class="tg">Berkendara Cerdas, Selamat Sampai Tujuan</div>
@@ -83,11 +78,9 @@
     background: linear-gradient(180deg, rgba(5,10,18,.72) 0%, rgba(5,10,18,.32) 42%, rgba(11,21,34,.96) 100%);
   }
   .brandline { position: absolute; left: 24px; top: 66px; display: flex; align-items: center; gap: 10px; color: #fff; }
-  .logo {
-    width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center;
-    background: rgba(23,196,184,.20); border: 1px solid rgba(23,196,184,.55);
-    color: var(--tl-300); backdrop-filter: blur(8px);
-  }
+  /* Dinaikkan spesifisitasnya agar tidak tertimpa aturan .hero img
+     yang meregangkan foto latar ke seluruh bingkai. */
+  .hero .logo { width: 38px; height: 38px; object-fit: contain; flex: none; }
   .nm { font-weight: 800; font-size: 16px; letter-spacing: .1em; }
   .tg { font-size: 10px; opacity: .82; }
 
